@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block body %}
+	{% if session.logged_in %}
+		<form action="{{ url_for('add_sneaker') }}" method="post" class="add-entry">
+			<dl>
+				<dt>Title:</dt>
+				<dd><input type="text" size="30" name="name"></dd>
+				<dt>Slug:</dt>
+				<dd><input type="text" size="30" name="slug"></dd>
+				<dt>Description:</dt>
+				<dd><textarea name="description" id="description" cols="40" rows="5"></textarea></dd>
+				<dd><input type="submit" value="Add"></dd>
+			</dl>
+		</form>
+	{% endif %}
+	<ul class="sneakers">
+		{% for sneaker in sneakers %}
+			<li>
+				<h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+			</li>
+		{% else %}
+			<li>
+				<em>Unbelievable. No sneakers here so far</em>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
