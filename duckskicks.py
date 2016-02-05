@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
+from contextlib import closing
 
 # configuration
 # export to ini and then import values
@@ -43,7 +44,7 @@ def show_sneakers():
 	return render_template('sneakers.html', sneakers=sneakers)
 
 @app.route('/add', methods=['POST'])
-def add_entry():
+def add_sneaker():
     if not session.get('logged_in'):
         abort(401)
     g.db.execute('insert into sneakers (name, slug, description) values (?, ?, ?)',
@@ -71,6 +72,10 @@ def logout():
 	session.pop('logged_in', None)
 	flash('You were logged out')
 	return redirect(url_for('show_sneakers'))
+
+@app.route('/add_sneaker')
+def add_sneaker_view():
+    return render_template(url_for('add_sneaker'))
 
 if __name__ == "__main__":
     app.run(debug = True)
