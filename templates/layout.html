@@ -10,9 +10,9 @@
 	<div class="page container">
 		<div class="nav">
 		{% if not session.logged_in %}
-			<a href="" class="btn btn-default">Log In</a>
+			<a href="{{ url_for('login') }}" class="btn btn-default">Log In</a>
 		{% else %}
-			<a href="" class="btn btn-primary">Log Out</a>
+			<a href="{{ url_for('logout') }}" class="btn btn-primary">Log Out</a>
 		{% endif %}
 		</div>
 		
