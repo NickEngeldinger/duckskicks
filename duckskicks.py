@@ -1,7 +1,10 @@
 import sqlite3
+import os
+
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
+from werkzeug import secure_filename
 
 # configuration
 # export to ini and then import values
@@ -10,9 +13,13 @@ DEBUG = True
 SECRET_KEY = 'vnX988GH3KMv-bTN6bP#M"#iM9.9W;'
 USERNAME = 'admin'
 PASSWORD = 'default'
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
@@ -32,6 +39,9 @@ def teardown_request(exception):
     db = getattr(g, 'db', None)
     if db is not None:
         db.close()
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def main():
@@ -73,9 +83,25 @@ def logout():
 	flash('You were logged out')
 	return redirect(url_for('show_sneakers'))
 
-@app.route('/add_sneaker')
-def add_sneaker_view():
-    return render_template(url_for('add_sneaker'))
+@app.route('/new_sneaker')
+def new_sneaker():
+    return render_template('new_sneaker.html')
+
+# DO THESE LIKE LOGIN WITH GET POST CHECKS AND USE FOR BOTH VIEW AND ACTION
+
+@app.route('/add_image', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #return redirect(url_for('uploaded_file', filename=filename))
+        flash('Image uploaded successfuly')
+        return redirect(url_for('new_image'))
+
+@app.route('/new_image')
+def new_image():
+    return render_template('new_image.html')    
 
 if __name__ == "__main__":
     app.run(debug = True)

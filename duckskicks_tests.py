@@ -37,15 +37,6 @@ class DuckskicksTestCase(unittest.TestCase):
     	assert 'Invalid username' in rv.data
     	rv = self.login('admin', 'defaultTaco')
     	assert 'Invalid password' in rv.data
-
-    def test_add_sneaker_login(self):
-    	rv = self.logout()
-    	rv = self.app.get('/add_sneaker')
-    	#assert 'You must be logged in' in rv.data
-    	rv = self.login('admin', 'default')
-    	assert 'Add Sneaker' in rv.data
-
-
-
+    
 if __name__ == '__main__':
     unittest.main()

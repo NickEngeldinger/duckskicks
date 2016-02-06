@@ -1,32 +1,5 @@
 {% extends 'layout.html' %}
 {% block body %}
-	{% if session.logged_in %}
-		<form action="{{ url_for('add_sneaker') }}" method="post" class="form-horizontal">
-			<div class="form-group">
-				<label for="inputName" class="col-sm-2 control-label">Name:</label>
-				<div class="col-md-10">
-					<input type="text" id="inputName" placeholder="Name" name="name">
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="inputSlug" class="col-sm-2 control-label" >Slug:</label>
-				<div class="col-md-10">
-					<input type="text" placeholder="slug" id="inputSlug" name="slug">
-				</div>
-			</div>
-			<div class="form-group" >
-				<label for="inputDescription" class="col-sm-2 control-label">Description:</label>
-				<div class="col-md-10">
-					<textarea name="description" id="inputDescription" cols="40" rows="5"></textarea>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary" value="Add">Add Sneaker</button>
-				</div>
-			</div>
-		</form>
-	{% endif %}
 	<ul class="sneakers">
 		{% for sneaker in sneakers %}
 			<li>

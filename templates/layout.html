@@ -8,21 +8,33 @@
 </head>
 <body>
 	<div class="page container">
-		<div class="nav">
-		{% if not session.logged_in %}
-			<a href="{{ url_for('login') }}" class="btn btn-default pull-right">Log In</a>
-		{% else %}
-			<a href="{{ url_for('logout') }}" class="btn btn-default pull-right">Log Out</a>
-		{% endif %}
+		<div class="navbar navbar-default">
+			<div class="col-md-12">
+				<a href="/" class="navbar-brand">Duckskicks</a>
+				{% if not session.logged_in %}
+					<a href="{{ url_for('login') }}" class="btn btn-default navbar-btn pull-right">Log In</a>
+				{% else %}
+					<div class="navbar-text">
+						<a href="{{ url_for('new_sneaker') }}" class="navbar-link">Add Sneaker</a>
+					</div>
+					<a href="{{ url_for('logout') }}" class="btn btn-default navbar-btn pull-right">Log Out</a>
+				{% endif %}
+			</div>
 		</div>
 		
 		{% for message in get_flashed_messages() %}
-			<div class="flash">{{ message }}</div>
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true"><i class="fa fa-times"></i></span>
+				</button>
+				{{ message }}
+			</div>
 		{% endfor %}
 
 		{% block body %}
 		{% endblock %}
 	</div>
+	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
